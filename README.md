@@ -1,7 +1,7 @@
 # Cambridge_COVID-19_ICU
 
 ## Authors
-Jacob Deasy, Emma Rocheteau, Katharina Kohler, Daniel J. Stubbs, Pietro Barbiero, Mark Cresham, Pietro Lio, Ari Ercole
+Jacob Deasy, Emma Rocheteau, Katharina Kohler, Daniel J. Stubbs, Pietro Barbiero, Pietro Lio, Ari Ercole
 University of Cambridge
 
 ## Background
