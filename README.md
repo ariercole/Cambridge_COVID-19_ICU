@@ -6,7 +6,7 @@ Jacob Deasy, Emma Rocheteau, Katharina Kohler, Daniel J. Stubbs, Pietro Barbiero
 University of Cambridge
 
 ## Background
-Pandemic COVID-19 disease has already caused worldwide morbidity and mortality. The case fatality rate is around 1-2% (approx 10x that of seasonal influenza which kills around 500,000 people annually). However intensive care unit (ICU) utilisation (for respiratory failure due to viral pneumonitis) is greater. This has the potential to exhaust ICU capacity as was seen in China and Italy which have been particularly badly hit.
+Intensive care unit (ICU) utilisation (for respiratory failure due to viral pneumonitis) is significant for COVID-19 infection. This has the potential to exhaust ICU capacity as was seen in Italy which has been particularly badly hit.
 
 It is possible to create further ICU capacity however this requires time (e.g. by cancelling elective major surgery) or freeing up beds so that ICU patients can be more quickly discharged. At present we do not have a model that allows ultra-early ICU occupancy forecasting. Here we present code for an ultra-early forecast which attempts aim to create a 14 day forecast of COVID-19 ICU occupancy in the NHS commissioning regions in England as a percentage of the total number of available beds from Public Health England dashboard COVID-19 case data.
 
