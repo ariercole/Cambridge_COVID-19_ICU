@@ -1,6 +1,6 @@
+import os
 import pandas as pd
 
-project_path = '/Users/emmarocheteau/PycharmProjects/CoViD-19_ICU'
 
 def get_age():
     age_cats = ['<10', '10-20', '20-30', '30-40','40-50', '50-60', '60-70', '70-80', '80+']
@@ -10,7 +10,9 @@ def get_age():
     prob_death = [0.002, 0.006, 0.03, 0.08, 0.15, 0.6, 2.2, 5.1, 9.3]  # mortality rate
     age = pd.DataFrame([prob_hosp, prob_critical_care_if_hosp, prob_death], columns=age_cats, index=['hosp', 'crit_care_if_hosp', 'death'])
     age /= 100  # convert percentages to probs
+
     return age, age_cats
+
 
 def get_gender():
     # we need to take into account the extra risk of being male
@@ -19,7 +21,9 @@ def get_gender():
     prob_death_gender = [[2.8, 1.7]]  # data taken from Wuhan on gender difference in mortality
     prob_death_total = 2.8*0.5117 + 1.7*0.4883  # males make up 51.17% of population China according to 2017 Census (http://www.stats.gov.cn/tjsj/ndsj/2018/indexeh.htm)
     gender = pd.DataFrame(prob_death_gender, columns=gender_cats)
+
     return gender, prob_death_total
+
 
 def get_age_brackets(lower, upper):
     cats = []
@@ -27,7 +31,9 @@ def get_age_brackets(lower, upper):
         cats.append(str(i))
     if lower == 80:
         cats.append('90+')
+
     return cats
+
 
 def get_age_cat_demographics(age_cats, df):
     demographics_age = pd.DataFrame([], columns=age_cats)
@@ -35,7 +41,9 @@ def get_age_cat_demographics(age_cats, df):
     demographics_age['Region'] = df['Unnamed: 1']
     for i, age_cat in enumerate(age_cats):
         demographics_age[age_cat] = df[get_age_brackets(i*10, i*10+10)].astype(int).sum(axis=1)
+
     return demographics_age
+
 
 age, age_cats = get_age()
 gender, prob_death_total = get_gender()
@@ -47,8 +55,8 @@ prob_death_by_age_gender = {}
 prob_death_by_age_gender['Male'] = age.loc['death']*(gender['Male'].values[0]/prob_death_total)
 prob_death_by_age_gender['Female'] = age.loc['death']*(gender['Female'].values[0]/prob_death_total)
 
-female = pd.read_csv('{}female_age_demographics.csv'.format(project_path + '/background_data/'), thousands=',')
-male = pd.read_csv('{}male_age_demographics.csv'.format(project_path + '/background_data/'), thousands=',')
+female = pd.read_csv(os.path.join('background', 'female_age_demographics.csv'), thousands=',')
+male = pd.read_csv(os.path.join('background', 'male_age_demographics.csv'), thousands=',')
 
 male_demographics = get_age_cat_demographics(age_cats, male)
 female_demographics = get_age_cat_demographics(age_cats, female)
@@ -71,4 +79,4 @@ per_region['Mortality Rate'] = per_region['Deaths']/(male['All Ages'] + female['
 per_region['Critical Care Needs Rate'] = per_region['Critical Beds Required']/(male['All Ages'] + female['All Ages'])
 per_region.drop(columns=['Deaths', 'Critical Beds Required'], inplace=True)
 per_region.sort_values('Region', inplace=True)
-per_region.to_csv(project_path + '/model_data/hospitalisation_and_fatalities.csv')
+per_region.to_csv(os.path.join('model', 'hospitalisation_and_fatalities.csv', index=False)

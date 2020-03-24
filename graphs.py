@@ -27,7 +27,7 @@ n_total  = n_obs + n_future
 
 
 def load_data():
-    daily_cases = pd.read_csv(os.path.join(os.pardir, 'model_data', 'uptodate_cases.csv'))
+    daily_cases = pd.read_csv(os.path.join(os.pardir, 'data', 'model', 'uptodate_cases.csv'))
 
     regions = daily_cases['region']
     dates = [f'{13+i}/03' for i in range(n_total)]
@@ -92,7 +92,7 @@ def occupancy_arrays(means, stds, exponents, pct_need_icu,
     means = np.stack(means)
     stds  = np.stack(stds)
     n_regions = means.shape[0]
-    n_days    = means.shape[1] - 1
+    n_days    = means.shape[1]
     n_samples = 500
     arr = np.zeros((n_regions, n_days, n_samples))
 
@@ -159,14 +159,14 @@ def _make_fig(x_true, y_true, x_pred, y_pred, ci_l, ci_u,
     color = "blue"
     trace0 = go.Scatter(
         x=x_pred,
-        y=ci_l,
+        y=ci_l.round(2),
         line=dict(color=color),
         name="95% CI",
         showlegend=False
     )
     trace1 = go.Scatter(
         x=x_pred,
-        y=ci_u,
+        y=ci_u.round(2),
         fill='tonexty',
         name="95% CI",
         line=dict(color=color)
@@ -174,14 +174,14 @@ def _make_fig(x_true, y_true, x_pred, y_pred, ci_l, ci_u,
     if obs:
         trace2 = go.Scatter(
             x=x_true,
-            y=y_true,
+            y=y_true.round(2),
             mode='markers',
             name='Recorded',
             line=dict(color="red")
         )
     trace3 = go.Scatter(
         x=x_pred,
-        y=y_pred,
+        y=y_pred.round(2),
         mode='lines+markers',
         name='Mean',
         line=dict(color=color, width=2),
@@ -271,9 +271,9 @@ def update_backend(icu_delay_normal_locs=list(range(1, 11)), los_gamma_shapes=li
     print('Updating backend dictionary, this may take a while...')
     print('Loading data...')
     X, X_pred, Y, _, _ = load_data()
-    death_and_icu_info = pd.read_csv(os.path.join(os.pardir, 'model_data', 'hospitalisation_and_fatalities.csv'))
+    death_and_icu_info = pd.read_csv(os.path.join(os.pardir, 'data', 'model', 'hospitalisation_and_fatalities.csv'))
     pct_need_icu = death_and_icu_info['Critical Care Needs Rate']
-    beds_info = pd.read_csv(os.path.join(os.pardir, 'model_data', 'ICU_beds_region.csv'))
+    beds_info = pd.read_csv(os.path.join(os.pardir, 'data', 'model', 'ICU_beds_region.csv'))
     beds = beds_info['n_beds (2019)'].values
 
     """
@@ -334,9 +334,9 @@ def update_backend(icu_delay_normal_locs=list(range(1, 11)), los_gamma_shapes=li
     save_dict_safely(big_dict)
 
 
-def choroplet_plot(plot_dict, geo_data, geo_df, today=None, delay=3, los=8):
+def choroplet_plot(plot_dict, geo_data, geo_df, today=None, delay=2, los=8):
     _, _, _, y_pred, _, _ = plot_dict["icu_occupancy"][delay][los]
-    if not today:
+    if today is None:
         today = n_obs
     # Index regions `today`
     y_pred = np.array(y_pred)
@@ -344,17 +344,17 @@ def choroplet_plot(plot_dict, geo_data, geo_df, today=None, delay=3, los=8):
 
     fig = px.choropleth_mapbox(
         geo_df,
-       geojson=geo_data,
-       locations='ID',
-       color='% additional demand',
-       color_continuous_scale="Portland",
-       featureidkey="properties.nuts118cd",
-       range_color=(0, 100),
-       mapbox_style="carto-positron",
-       hover_data=["Region", "% additional demand"],
-       zoom=4.7,
-       center={"lat": 53, "lon": -2},
-       opacity=0.7
+        geojson=geo_data,
+        locations='ID',
+        color='% additional demand',
+        color_continuous_scale="Portland",
+        featureidkey="properties.nuts118cd",
+        range_color=(0, 100),
+        mapbox_style="carto-positron",
+        hover_data=["Region", "% additional demand"],
+        zoom=4.7,
+        center={"lat": 53, "lon": -2},
+        opacity=0.7
     )
     fig.update_layout(margin={"r": 0, "t": 0, "l": 0, "b": 0})
 

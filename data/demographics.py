@@ -1,15 +1,17 @@
-import pandas as pd
-import numpy as np
-import matplotlib.pyplot as plt
 import matplotlib as mpl
-from length_of_stay_model.prob_hospitalisation import project_path, total_demographics, age_cats, per_region
+import matplotlib.pyplot as plt
+import numpy as np
+import pandas as pd
+
+from prob_hospitalisation import age_cats, per_region, total_demographics
+
 
 mpl.rc('font', family = 'serif', size = 30)
 mpl.rcParams['xtick.labelsize'] = 20
 mpl.rcParams['ytick.labelsize'] = 30
 
-def plots(total_demographics, icu_beds, per_region):
 
+def plots(total_demographics, icu_beds, per_region):
     # demographics plot
     fig, (ax11, ax21) = plt.subplots(1, 2)
     fig.set_size_inches(28, 10)
@@ -56,10 +58,8 @@ def plots(total_demographics, icu_beds, per_region):
     ax21.set_ylim((0, 3.63))
     ax22.set_ylim((0, 12.5))
     ax21.legend(['Survivors', 'Non-Survivors'], loc='upper right', prop={'size': 22})
-    plt.savefig(project_path + '/figs/demographics_cc_icu.png', dpi=300)
-
-    return
+    plt.savefig(os.path.join(os.pardir, 'figs', 'demographics_cc_icu.pdf'))
 
 
-icu_beds = pd.read_csv(project_path + '/model_data/ICU_beds_region.csv')
+icu_beds = pd.read_csv(os.path.join('model', 'ICU_beds_region.csv')
 plots(total_demographics, icu_beds, per_region)
