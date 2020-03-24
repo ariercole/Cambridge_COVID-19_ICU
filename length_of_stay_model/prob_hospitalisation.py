@@ -14,7 +14,7 @@ def get_age():
 
 def get_gender():
     # we need to take into account the extra risk of being male
-    # I am assuming the extra risk applies on a univariate basis and equally to hospitalisations and deaths
+    # I am assuming the extra risk applies equally to hospitalisations and deaths
     gender_cats = ['Male', 'Female']
     prob_death_gender = [[2.8, 1.7]]  # data taken from Wuhan on gender difference in mortality
     prob_death_total = 2.8*0.5117 + 1.7*0.4883  # males make up 51.17% of population China according to 2017 Census (http://www.stats.gov.cn/tjsj/ndsj/2018/indexeh.htm)

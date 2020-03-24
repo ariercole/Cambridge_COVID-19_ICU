@@ -8,7 +8,6 @@ mpl.rc('font', family = 'serif', size = 30)
 mpl.rcParams['xtick.labelsize'] = 20
 mpl.rcParams['ytick.labelsize'] = 30
 
-# generate plots of demographics (age against ICU beds) and critical care needs in the UK
 def plots(total_demographics, icu_beds, per_region):
 
     # demographics plot
