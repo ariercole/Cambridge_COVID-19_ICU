@@ -1,6 +1,6 @@
 # Cambridge_COVID-19_ICU
 
-Please note that this work has **yet to be peer-reviewed** and is an early access pre-print. It has not been validated and should not be used for clinical purposes
+Please note that this work has **yet to be peer-reviewed** and is an early access pre-print. It has not been validated yet and therefore should not be used for clinical purposes.
 
 ## Authors
 Jacob Deasy, Emma Rocheteau, Katharina Kohler, Daniel J. Stubbs, Pietro Barbiero, Pietro Lio, Ari Ercole
